@@ -11,26 +11,88 @@ class EventoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Evento App',
-      themeMode: ThemeMode.dark,
+      title: 'Evento teste',
+      themeMode: ThemeMode.system,
       darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme(
+          brightness: Brightness.dark,
+          primary: const Color(0xFF00FFC6),
+          onPrimary: Colors.black,
+          secondary: const Color(0xFF1A1A40),
+          onSecondary: Colors.white,
+          error: Colors.redAccent,
+          onError: Colors.black,
+          background: const Color(0xFF181824),
+          onBackground: Colors.white,
+          surface: const Color(0xFF23233A),
+          onSurface: Colors.white,
+        ),
         useMaterial3: true,
-        scaffoldBackgroundColor: Colors.black12,
+        scaffoldBackgroundColor: const Color(0xFF181824),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.green,
-          elevation: 4,
-          shadowColor: Colors.grey,
+          backgroundColor: Color(0xFF23233A),
+          elevation: 8,
+          shadowColor: Color(0xFF00FFC6),
+          titleTextStyle: TextStyle(
+            color: Color(0xFF00FFC6),
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            letterSpacing: 1.2,
+          ),
+        ),
+        cardTheme: CardThemeData(
+          color: const Color(0xFF23233A),
+          elevation: 12,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32),
+          ),
+          shadowColor: const Color(0xFF00FFC6),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFF00FFC6),
+          foregroundColor: Colors.black,
         ),
       ),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        brightness: Brightness.light,
+        colorScheme: ColorScheme(
+          brightness: Brightness.light,
+          primary: const Color(0xFF7F00FF),
+          onPrimary: Colors.white,
+          secondary: const Color(0xFF00FFC6),
+          onSecondary: Colors.black,
+          error: Colors.redAccent,
+          onError: Colors.white,
+          background: const Color(0xFFF5F6FA),
+          onBackground: Colors.black,
+          surface: Colors.white,
+          onSurface: Colors.black,
+        ),
         useMaterial3: true,
-        scaffoldBackgroundColor: Colors.grey[100],
+        scaffoldBackgroundColor: const Color(0xFFF5F6FA),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.deepPurple,
-          elevation: 4,
-          shadowColor: Colors.black45,
+          backgroundColor: Color(0xFF7F00FF),
+          elevation: 8,
+          shadowColor: Color(0xFF00FFC6),
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            letterSpacing: 1.2,
+          ),
+        ),
+        cardTheme: CardThemeData(
+          color: Colors.white,
+          elevation: 12,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32),
+          ),
+          shadowColor: const Color(0xFF7F00FF),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFF7F00FF),
+          foregroundColor: Colors.white,
         ),
       ),
       home: const MainScreen(),
@@ -72,75 +134,93 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
-        title: const Text(
-          'Evento App',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: ShaderMask(
+          shaderCallback: (Rect bounds) {
+            return const LinearGradient(
+              colors: [Color(0xFF00FFC6), Color(0xFF7F00FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ).createShader(bounds);
+          },
+          child: const Text(
+            'Evento App',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              letterSpacing: 1.5,
+            ),
+          ),
         ),
         centerTitle: true,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(28)),
         ),
+        backgroundColor: theme.appBarTheme.backgroundColor,
+        elevation: 8,
+        shadowColor: theme.appBarTheme.shadowColor,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _onTheme,
-        child: Icon(Icons.access_alarms),
+        child: const Icon(CupertinoIcons.moon_stars),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        elevation: 8,
       ),
       body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 400),
+        switchInCurve: Curves.easeInOutCubic,
+        switchOutCurve: Curves.easeInOutCubic,
         child: _screens[_selectedIndex],
       ),
       bottomNavigationBar: Container(
+        margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
-          ),
+          color: theme.cardColor,
+          borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
-              color: Colors.black12,
-              blurRadius: 12,
-              offset: Offset(0, -2),
+              color: theme.colorScheme.primary.withOpacity(0.15),
+              blurRadius: 24,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
-          ),
+          borderRadius: BorderRadius.circular(32),
           child: BottomNavigationBar(
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.house_fill),
+                icon: Icon(CupertinoIcons.house_alt_fill),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.photo_on_rectangle),
+                icon: Icon(CupertinoIcons.photo_camera_solid),
                 label: 'Fotos',
               ),
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.info_circle_fill),
+                icon: Icon(CupertinoIcons.info),
                 label: 'Informações',
               ),
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.calendar),
+                icon: Icon(CupertinoIcons.time),
                 label: 'Agenda',
               ),
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.settings_solid),
+                icon: Icon(CupertinoIcons.gear_solid),
                 label: 'Opções',
               ),
             ],
             currentIndex: _selectedIndex,
-            selectedItemColor: Colors.deepPurple,
-            unselectedItemColor: Colors.grey,
+            selectedItemColor: theme.colorScheme.primary,
+            unselectedItemColor: theme.colorScheme.onSurface.withOpacity(0.5),
             onTap: _onItemTapped,
             type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
             elevation: 0,
+            showUnselectedLabels: false,
           ),
         ),
       ),
@@ -152,40 +232,170 @@ class _MainScreenState extends State<MainScreen> {
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Center(
-      child: Card(
-        elevation: 8,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(40),
+          gradient: const LinearGradient(
+            colors: [Color(0xFF23233A), Color(0xFF181824)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.primary.withOpacity(0.18),
+              blurRadius: 32,
+              offset: const Offset(0, 16),
+            ),
+          ],
+        ),
         child: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                'Bem-vindo ao Evento!',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(32),
+                child: Image.asset(
+                  'asset/images/logo.jpg',
+                  height: 160,
+                  width: 160,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+              ShaderMask(
+                shaderCallback: (Rect bounds) {
+                  return const LinearGradient(
+                    colors: [Color(0xFF00FFC6), Color(0xFF7F00FF)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ).createShader(bounds);
+                },
+                child: const Text(
+                  'astronoeme',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                    color: Colors.white,
                   ),
-                  elevation: 4,
                 ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '2025',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: theme.colorScheme.primary.withOpacity(0.7),
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Cosmo Noeme',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                  color: theme.colorScheme.primary,
+                  letterSpacing: 1.1,
+                ),
+              ),
+              const SizedBox(height: 32),
+              _FuturisticButton(
+                label: 'nossa sala',
+                icon: CupertinoIcons.person_2_fill,
+                color: theme.colorScheme.primary,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Bem-vindo à nossa sala!')),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              _FuturisticButton(
+                label: 'jogo',
+                icon: CupertinoIcons.game_controller_solid,
+                color: const Color(0xFF00FFC6),
+                onPressed: () {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(const SnackBar(content: Text('Vamos jogar!')));
+                },
+              ),
+              const SizedBox(height: 16),
+              _FuturisticButton(
+                label: 'jornada atronomica',
+                icon: CupertinoIcons.rocket_fill,
+                color: const Color(0xFF7F00FF),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Esperamos que aproveite o evento!'),
+                      content: Text('Explorando a jornada astronômica!'),
                     ),
                   );
                 },
-                child: const Text('Saudar'),
+              ),
+              const SizedBox(height: 16),
+              _FuturisticButton(
+                label: 'agradecimentos',
+                icon: CupertinoIcons.heart_fill,
+                color: Colors.amber,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Agradecemos sua presença!')),
+                  );
+                },
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _FuturisticButton extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onPressed;
+  const _FuturisticButton({
+    required this.label,
+    required this.icon,
+    required this.color,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 54,
+      child: ElevatedButton.icon(
+        icon: Icon(icon, color: Colors.white, size: 26),
+        label: Text(
+          label,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            letterSpacing: 1.1,
+            color: Colors.white,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          elevation: 10,
+          shadowColor: color.withOpacity(0.4),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+        ),
+        onPressed: onPressed,
       ),
     );
   }
